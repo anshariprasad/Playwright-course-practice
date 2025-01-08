@@ -146,3 +146,52 @@ module.exports = {
 };
 
 ```
+
+## Basic Methods for web automation testing
+
+### Locators supported by Playwright 
+
+1. CSS Selector: CSS selectors are commonly used to select elements based on their CSS properties.
+2. Text Selector: Text selectors allow you to locate elements based on their visible text content.
+3. XPath Selector: XPath selectors provide a way to navigate through elements and attributes in an XML-like structure
+4. Role Selector: Role selectors are used to locate elements based on their ARIA roles.
+5. React Selector: React selectors are used to locate components in a React application.
+6. Test ID Selector: Test ID selectors allow you to locate elements based on custom data-testid attributes, often used in testing.
+7. Combination of Selectors: Playwright allows combining multiple selectors to create more complex locators.
+8. Nth-match Selector: nth-match selectors are used to locate the nth element that matches a given selector
+
+```js
+const { chromium } = require('playwright');
+
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  await page.goto('https://example.com');
+  
+  // CSS Selector
+  await page.click('button.submit');
+  
+  // Text Selector
+  await page.click('text="Learn More"');
+  
+  // XPath Selector
+  await page.click('//button[@class="submit"]');
+  
+  // Role Selector
+  await page.click('role=button[name="Submit"]');
+  
+  // React Selector
+  await page.click('react=SubmitButton');
+  
+  // Test ID Selector
+  await page.click('[data-testid="submit-button"]');
+  
+  // Combination of Selectors
+  await page.click('div.container >> text="Submit"');
+  
+  // nth-Match Selector
+  await page.click('css=button >> nth=2');
+  
+  await browser.close();
+})();
+```

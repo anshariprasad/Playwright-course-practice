@@ -18,7 +18,8 @@ module.exports = defineConfig({
   },
   reporter: 'html',
   use: {
-    browserName:'chromium'
+    browserName:'chromium',
+    headless: true
   }
 });
 
