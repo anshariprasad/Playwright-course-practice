@@ -1,0 +1,14 @@
+{
+  "name": "playwright-course-practice",
+  "version": "1.0.0",
+  "description": "Playwright is a powerful end-to-end testing framework that enables reliable automation for modern wbe applications. This course will take you on a comprehensive journey, teaching you how to leverage Playwright capacity using Javascript to build robust and efficient automation tests from scratch, using a well-structured framework.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.5"
+  }
+}
