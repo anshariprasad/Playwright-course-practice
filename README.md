@@ -79,3 +79,70 @@ const { chromium } = require('playwright');
 })();
 ```
 
+### Playwright Important configurations
+
+
+**Playwright Configuration Files**
+
+Playwright uses configuration files to define and manage settings for your tests, ensuring a streamlined and consistent testing environment.
+
+*Location and Format*
+Filename: The configuration file is usually named playwright.config.js or playwright.config.ts for TypeScript.
+Structure: The file exports a configuration object that specifies various settings and options.
+
+*Important Configurations*
+
+1. Global Setup and Teardown
+   - setup(): This function runs before all tests, perfect for initializing one-time setup tasks.
+   - teardown(): This function runs after all tests, useful for cleaning up resources.
+2. Projects
+   - Define multiple projects to run tests in different browsers or configurations. Each project can have its own settings.
+3. Timeouts: Set default timeouts for actions and tests to prevent long-running tests from stalling.
+4. Test Directory: Specify the directory where your test files are located.
+5. Use: Define default settings and options for the tests, such as viewport size, base URL, headless mode, and more.
+6. Reporter: Configure how test results are reported. Playwright supports various reporters like list, dot, JSON, and more.
+7. Retries: Specify the number of retries for a failed test to handle flaky tests.
+8. Output Directory: Define where to save test artifacts like screenshots, videos, and trace files.
+
+```js
+const { devices } = require('@playwright/test');
+
+module.exports = {
+  timeout: 30000,
+  testDir: './tests',
+  retries: 2,
+  outputDir: './test-results',
+
+  use: {
+    headless: true,
+    viewport: { width: 1280, height: 720 },
+    ignoreHTTPSErrors: true,
+    video: 'on',
+    screenshot: 'on',
+  },
+
+  projects: [
+    {
+      name: 'Desktop Chrome',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'Desktop Firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    },
+  ],
+
+  reporter: [
+    ['list'],
+    ['junit', { outputFile: 'results.xml' }],
+  ],
+
+  globalSetup: './global-setup.js',
+  globalTeardown: './global-teardown.js',
+};
+
+```

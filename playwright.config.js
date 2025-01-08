@@ -16,6 +16,9 @@ module.exports = defineConfig({
   expect: {
     timeout: 5000,
   },
-  reporter: 'html'
+  reporter: 'html',
+  use: {
+    browserName:'chromium'
+  }
 });
 
