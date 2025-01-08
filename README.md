@@ -22,4 +22,13 @@ Playwright is a powerful end-to-end testing framework that enables reliable auto
 3. **Browser Context Management:** Explore Playwright's browser context feature, which allows you to save and transfer browser state across your test suite, improving test efficiency and reducing the overhead of setting up the same browser state for each test case.
 4. **Code generation tool:** Discovers Playwright codegen tool, which can generate test code by recording your actions, saving your time and effort in creating initial test cases and providing a starting point for further customization.
 
- 
+## Getting started with Playwright Automation Core Concepts
+
+ ### Setting up Playwright
+
+ ```bash
+ npm init playwright 
+ ```
+
+ - Will create lits of files required for playwright setup
+ - In playwright we have to use async function to run all the commands sequentially
