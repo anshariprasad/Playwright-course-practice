@@ -7,6 +7,7 @@ Playwright is a powerful end-to-end testing framework that enables reliable auto
 - Code Spell Checker
 - EsLint
 - Playwright Test for VSCode
+- Prettier - Code Formatter
 
 ## Why Playwright ?
 
@@ -24,11 +25,57 @@ Playwright is a powerful end-to-end testing framework that enables reliable auto
 
 ## Getting started with Playwright Automation Core Concepts
 
- ### Setting up Playwright
+### Setting up Playwright
 
- ```bash
- npm init playwright 
- ```
+```bash
+npm init playwright
+```
 
- - Will create lits of files required for playwright setup
- - In playwright we have to use async function to run all the commands sequentially
+- Will create lits of files required for playwright setup
+- In playwright we have to use async function to run all the commands sequentially
+
+### Browser Context and Page fixture in Playwright
+
+**Browser Context:** A browser context is a lightweight, isolated environment within a single browser instance. It enables running multiple, independent test scenarios simultaneously without interference. Each context can have its own cookies, cache, and storage, mimicking separate, isolated browser profiles.
+
+_Key Features of browser context_
+
+- Isolation: Each browser context is isolated from other. This ensures one test's state (e.g, cookies, sessions) does not impact another.
+- Efficiency: Multiple browser contexts run within a single browser instance, reducing resources using compared to launching multiple browsers.
+- Customization: Each context can have custom settings as user agent, viewport, locale, and permissions.
+
+```js
+const { chromium } = require('playwright');
+
+(async () => {
+  const browser = await chromium.launch();
+  const context = await browser.newContext({
+    viewport: { width: 1280, height: 800 },
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+  });
+  // Use context for further operations
+})();
+
+```
+
+**Page Fixture:** A page fixture in Playwright JS represents a single tab within a browser context. It can be used to navigate to different URLs, interact with web elements, and perform various actions on a web page.
+
+_Key Features of browser context_
+
+- Isolation: Pages within the same context share cookies and cache but are otherwise independent.
+- Convenience: Simplifies interactions with web pages during testing.
+- Events Handling: Supports various events such as load, dom content loaded, and more for better test control.
+
+```js
+const { chromium } = require('playwright');
+
+(async () => {
+  const browser = await chromium.launch();
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.goto('https://example.com');
+  await page.click('text="Login"');
+  // Use page for further operations
+})();
+```
+

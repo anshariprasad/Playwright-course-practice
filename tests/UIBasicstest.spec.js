@@ -1,10 +1,14 @@
 import {test} from '@playwright/test'
 
 
-test("First Playwright tets", async ()=>{
-    // Playwright code
-    // Step-1 - Open Browser
-    // Step-2 - Enter i/p
-    // Step-3 - Click
 
+test("Browser Context Playwright tets", async ({browser})=>{
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise");
+})
+
+
+test("Page Playwright tets", async ({page})=>{
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise");
 })
