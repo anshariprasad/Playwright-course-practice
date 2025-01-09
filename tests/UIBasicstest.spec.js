@@ -2,6 +2,18 @@ import {expect, test} from '@playwright/test'
 import { log } from 'console';
 
 
+test.only("Waiting for message to display and create assertion", async({page})=>{
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise");
+    console.log(await page.title());
+    await Promise.all([
+        page.locator("#username").fill('rahulshetty'),
+        page.locator("[type='password']").fill('learning'),
+        page.locator('#signInBtn').click(),
+    ])
+    const message = await page.locator('[style*=block]').textContent();
+    console.log(message);
+})
+
 
 test("Browser Context Playwright tests", async ({browser})=>{
     const context = await browser.newContext();
