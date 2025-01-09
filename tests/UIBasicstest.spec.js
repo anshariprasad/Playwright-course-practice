@@ -2,16 +2,23 @@ import {expect, test} from '@playwright/test'
 import { log } from 'console';
 
 
-test.only("Waiting for message to display and create assertion", async({page})=>{
+
+
+
+test("Waiting for message to display and create assertion", async({page})=>{
     await page.goto("https://rahulshettyacademy.com/loginpagePractise");
     console.log(await page.title());
+    // Perform sign in
     await Promise.all([
         page.locator("#username").fill('rahulshetty'),
         page.locator("[type='password']").fill('learning'),
         page.locator('#signInBtn').click(),
     ])
     const message = await page.locator('[style*=block]').textContent();
-    console.log(message);
+    const firstElementUsingFirst = await page.locator('.card-body a').first();
+    const firstElementUsingNth = await page.locator('.card-body a').nth(0).textContent();
+    // Accessing multiple elements from page
+    const allTitles = await page.locator('.card-body a').allTextContents();
 })
 
 
