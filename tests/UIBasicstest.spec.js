@@ -5,6 +5,7 @@ test("@UI control", async({page})=>{
     await page.goto("https://rahulshettyacademy.com/loginpagePractise");
     const userName = page.locator('#username')
     const signIn = page.locator('#signInBtn')
+    const documentLink = page.locator("[href*='document-request']")
     const dropdown = page.locator('select.form-control')
     // Clicking a Select Dropdown
     await dropdown.selectOption('consult');
@@ -17,7 +18,9 @@ test("@UI control", async({page})=>{
     await page.locator('#terms').click();
     await expect(page.locator('#terms')).toBeChecked();
     await page.locator('#terms').uncheck();
-    expect(await page.locator('#terms').isChecked).toBeFalsy()
+    expect(await page.locator('#terms').isChecked()).toBeFalsy()
+    // Checking Blinking Text
+    await expect(documentLink).toHaveAttribute('class','blinkingText')
 })
 
 

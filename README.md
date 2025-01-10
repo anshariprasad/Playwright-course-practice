@@ -434,3 +434,80 @@ const { chromium } = require('playwright');
     await browser.close();
 })();
 ```
+
+### How to use Async/await in playwright correctly
+
+Using `async` and `await` correctly in Playwright is essential for handling asynchronous operations effectively. Here are some key points and examples to help you understand how to use them:
+
+1. **Understanding `async` and `await`**:
+   - The `async` keyword is used to declare an asynchronous function. This means the function will return a promise.
+   - The `await` keyword is used to pause the execution of an `async` function until the promise is resolved.
+
+2. **Basic Example**:
+   ```javascript
+   const { chromium } = require('playwright');
+
+   (async () => {
+       const browser = await chromium.launch();
+       const page = await browser.newPage();
+       await page.goto('https://example.com');
+       const title = await page.title();
+       console.log(title);
+       await browser.close();
+   })();
+   ```
+   In this example, `await` is used to wait for the browser to launch, a new page to open, the page to navigate to a URL, and the title to be retrieved.
+
+3. **Handling Errors**:
+   - Use `try...catch` blocks to handle errors in asynchronous functions.
+   ```javascript
+   (async () => {
+       try {
+           const browser = await chromium.launch();
+           const page = await browser.newPage();
+           await page.goto('https://example.com');
+           const title = await page.title();
+           console.log(title);
+           await browser.close();
+       } catch (error) {
+           console.error('Error:', error);
+       }
+   })();
+   ```
+
+4. **Waiting for Elements**:
+   - Use `await` to wait for elements to be available before interacting with them.
+   ```javascript
+   await page.waitForSelector('input#username');
+   await page.fill('input#username', 'myUsername');
+   ```
+
+5. **Common Pitfalls**:
+   - **Forgetting to use `await`**: This can lead to unexpected behavior as the code may proceed before the promise is resolved.
+   - **Overusing `await`**: Using `await` unnecessarily can slow down your tests. Only use it when you need to wait for a promise to resolve.
+
+Here's a more comprehensive example:
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+    try {
+        const browser = await chromium.launch();
+        const page = await browser.newPage();
+        await page.goto('https://example.com');
+
+        // Wait for an element to be available
+        await page.waitForSelector('input#username');
+        await page.fill('input#username', 'myUsername');
+
+        // Perform other actions
+        await page.click('button#submit');
+        const response = await page.waitForResponse(response => response.url().includes('submit') && response.status() === 200);
+        console.log('Form submitted successfully:', response.ok());
+
+        await browser.close();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+})();
+```
