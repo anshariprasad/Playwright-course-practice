@@ -511,3 +511,78 @@ const { chromium } = require('playwright');
     }
 })();
 ```
+
+### Handling Child Window and Tabs with Playwright by switching browser context
+
+Handling child windows and tabs in Playwright involves using browser contexts to manage multiple windows or tabs. Here are the steps to handle them effectively:
+
+1. **Opening a New Window or Tab**:
+   - Use `context.newPage()` to create a new tab within the same browser context.
+   ```javascript
+   const { chromium } = require('playwright');
+
+   (async () => {
+       const browser = await chromium.launch();
+       const context = await browser.newContext();
+       const page = await context.newPage();
+       await page.goto('https://example.com');
+
+       // Open a new tab
+       const newPage = await context.newPage();
+       await newPage.goto('https://example.com/new-tab');
+
+       await browser.close();
+   })();
+   ```
+
+2. **Handling New Windows or Tabs Opened by Actions**:
+   - Use the `page.waitForEvent('popup')` method to handle new windows or tabs opened by user actions.
+   ```javascript
+   const { chromium } = require('playwright');
+
+   (async () => {
+       const browser = await chromium.launch();
+       const context = await browser.newContext();
+       const page = await context.newPage();
+       await page.goto('https://example.com');
+
+       // Click a link that opens a new window
+       const [newPage] = await Promise.all([
+           context.waitForEvent('page'),
+           page.click('a[target="_blank"]') // This should trigger the new tab/window
+       ]);
+
+       await newPage.waitForLoadState();
+       console.log('New page URL:', newPage.url());
+
+       await browser.close();
+   })();
+   ```
+
+3. **Switching Between Windows or Tabs**:
+   - Use the `context.pages()` method to get all open pages (tabs/windows) and switch between them.
+   ```javascript
+   const { chromium } = require('playwright');
+
+   (async () => {
+       const browser = await chromium.launch();
+       const context = await browser.newContext();
+       const page = await context.newPage();
+       await page.goto('https://example.com');
+
+       // Open a new tab
+       const newPage = await context.newPage();
+       await newPage.goto('https://example.com/new-tab');
+
+       // Get all open pages
+       const pages = context.pages();
+       console.log('Number of open pages:', pages.length);
+
+       // Switch to the new tab
+       await pages[1].bringToFront();
+       console.log('Switched to new tab URL:', pages[1].url());
+
+       await browser.close();
+   })();
+   ```
+
