@@ -290,3 +290,147 @@ const { chromium } = require('playwright');
 
 ## Handling UI elements Components in Cypress 
 
+### Handling Static Select Dropdown
+
+Handling static select dropdowns in Playwright is quite straightforward. Here are a few methods you can use:
+
+1. **Using the `select_option` method with values**:
+   ```javascript
+   await page.select_option('select#dropdown', 'value');
+   ```
+   This method selects the option with the specified value.
+
+2. **Using the `select_option` method with labels**:
+   ```javascript
+   await page.select_option('select#dropdown', { label: 'Option Label' });
+   ```
+   This method selects the option based on the visible text label.
+
+3. **Using JavaScript**:
+   ```javascript
+   await page.evaluate(() => {
+       document.querySelector('select#dropdown').value = 'value';
+   });
+   ```
+   This method uses JavaScript to set the value of the dropdown directly.
+
+Here's a simple example to illustrate these methods:
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+
+    // Using value
+    await page.select_option('select#dropdown', 'value1');
+
+    // Using label
+    await page.select_option('select#dropdown', { label: 'Option 2' });
+
+    // Using JavaScript
+    await page.evaluate(() => {
+        document.querySelector('select#dropdown').value = 'value3';
+    });
+
+    await browser.close();
+})();
+```
+
+
+### Handling Radio Buttons
+
+Handling radio buttons in Playwright is quite simple. Here are a few methods you can use:
+
+1. **Using the `check` method**:
+   ```javascript
+   await page.locator('input[type="radio"][value="option1"]').check();
+   ```
+   This method checks the radio button with the specified value.
+
+2. **Using JavaScript**:
+   ```javascript
+   await page.evaluate(() => {
+       document.querySelector('input[type="radio"][value="option1"]').checked = true;
+   });
+   ```
+   This method uses JavaScript to set the checked property of the radio button directly.
+
+3. **Using the `click` method**:
+   ```javascript
+   await page.locator('input[type="radio"][value="option1"]').click();
+   ```
+   This method clicks on the radio button to select it.
+
+Here's a simple example to illustrate these methods:
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+
+    // Using check method
+    await page.locator('input[type="radio"][value="option1"]').check();
+
+    // Using JavaScript
+    await page.evaluate(() => {
+        document.querySelector('input[type="radio"][value="option1"]').checked = true;
+    });
+
+    // Using click method
+    await page.locator('input[type="radio"][value="option1"]').click();
+
+    await browser.close();
+})();
+```
+
+### Handling Checkbox Buttons
+
+Handling radio checkboxes in Playwright is similar to handling radio buttons and checkboxes individually. Here are a few methods you can use:
+
+1. **Using the `check` method**:
+   ```javascript
+   await page.locator('input[type="checkbox"][value="option1"]').check();
+   ```
+   This method checks the checkbox with the specified value.
+
+2. **Using JavaScript**:
+   ```javascript
+   await page.evaluate(() => {
+       document.querySelector('input[type="checkbox"][value="option1"]').checked = true;
+   });
+   ```
+   This method uses JavaScript to set the checked property of the checkbox directly.
+
+3. **Using the `click` method**:
+   ```javascript
+   await page.locator('input[type="checkbox"][value="option1"]').click();
+   ```
+   This method clicks on the checkbox to select it.
+
+Here's a simple example to illustrate these methods:
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+
+    // Using check method
+    await page.locator('input[type="checkbox"][value="option1"]').check();
+
+    // Using JavaScript
+    await page.evaluate(() => {
+        document.querySelector('input[type="checkbox"][value="option1"]').checked = true;
+    });
+
+    // Using click method
+    await page.locator('input[type="checkbox"][value="option1"]').click();
+
+    await browser.close();
+})();
+```

@@ -1,8 +1,24 @@
 import {expect, test} from '@playwright/test'
-import { log } from 'console';
 
 
-
+test("@UI control", async({page})=>{
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise");
+    const userName = page.locator('#username')
+    const signIn = page.locator('#signInBtn')
+    const dropdown = page.locator('select.form-control')
+    // Clicking a Select Dropdown
+    await dropdown.selectOption('consult');
+    // Clicking a radio button
+    await page.locator(".radiotextsty").last().click();
+    await page.locator('#okayBtn').click();
+    // Assert Radio button 
+    await expect(page.locator(".radiotextsty").last()).toBeChecked();
+    // Working with checkbox
+    await page.locator('#terms').click();
+    await expect(page.locator('#terms')).toBeChecked();
+    await page.locator('#terms').uncheck();
+    expect(await page.locator('#terms').isChecked).toBeFalsy()
+})
 
 
 test("Waiting for message to display and create assertion", async({page})=>{
@@ -14,11 +30,6 @@ test("Waiting for message to display and create assertion", async({page})=>{
         page.locator("[type='password']").fill('learning'),
         page.locator('#signInBtn').click(),
     ])
-    const message = await page.locator('[style*=block]').textContent();
-    const firstElementUsingFirst = await page.locator('.card-body a').first();
-    const firstElementUsingNth = await page.locator('.card-body a').nth(0).textContent();
-    // Accessing multiple elements from page
-    const allTitles = await page.locator('.card-body a').allTextContents();
 })
 
 
