@@ -1,6 +1,8 @@
 import {expect, test} from '@playwright/test';
 import { text } from 'stream/consumers';
 
+
+
 test("@WC Testing after all network calls are made",async ({page})=>{
     const email = "anshika@gmail.com"
     const productName = 'LG Refrigerator'
