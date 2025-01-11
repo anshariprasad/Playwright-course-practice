@@ -752,3 +752,338 @@ test('example test with trace, logs, and screenshots', async ({ page }) => {
 - **Better Reporting**: HTML reports offer a clear and concise summary of test results, which is useful for communicating with team members and stakeholders.
 - **Improved Test Coverage**: By analyzing traces and logs, you can ensure that your tests cover all necessary scenarios and edge cases.
 
+
+## Playwright Unique Locators and Smart Testing and Test Runner usage
+
+### Understanding Playwright getByLabel syntax
+
+The `getByLabel` method in Playwright is a powerful locator that allows you to find form control elements based on the text of their associated labels. This method is particularly useful for ensuring your tests are both readable and maintainable, as it leverages the visible text labels that users interact with.
+
+#### How `getByLabel` Works
+
+The `getByLabel` method can locate input elements by:
+- The text of the associated `<label>` element.
+- The `aria-labelledby` attribute.
+- The `aria-label` attribute.
+
+#### Usage Example
+
+Here's a simple example to illustrate how you can use `getByLabel` in your Playwright scripts:
+
+```javascript
+const { test, expect } = require('@playwright/test');
+
+test('example test using getByLabel', async ({ page }) => {
+    await page.goto('https://example.com');
+
+    // Locate input by label text and fill it
+    await page.getByLabel('Username').fill('myUsername');
+    await page.getByLabel('Password').fill('myPassword');
+
+    // Submit the form
+    await page.getByRole('button', { name: 'Sign in' }).click();
+
+    // Verify the result
+    await expect(page.getByText('Welcome, myUsername!')).toBeVisible();
+});
+```
+
+#### Benefits of Using `getByLabel`
+
+1. **Readability**: Using labels makes your tests more readable and easier to understand, as they reflect the actual text users see on the page.
+2. **Maintainability**: If the structure of your HTML changes but the labels remain the same, your tests are less likely to break.
+3. **Accessibility**: Leveraging labels ensures that your tests are aligned with accessibility best practices, as labels are crucial for screen readers and other assistive technologies.
+
+#### When to Use `getByLabel`
+
+- **Form Inputs**: Ideal for locating text inputs, checkboxes, radio buttons, and other form controls.
+- **Accessibility**: Ensures that your tests are robust and accessible, as labels are a key part of accessible web design.
+
+By using `getByLabel`, you can create more intuitive and resilient tests that closely mimic how users interact with your application.
+
+
+
+ ### Understanding Playwright UI
+
+ Playwright UI Mode is a graphical user interface that enhances your testing experience by providing a comprehensive way to explore, run, and debug your tests. Here are some key features and how they can help you:
+
+#### Key Features of Playwright UI Mode
+
+1. **Test Exploration and Execution**:
+   - **Test Sidebar**: All test files are loaded into a sidebar where you can expand each file and describe block to individually run, view, watch, and debug each test.
+   - **Run Tests**: You can run all tests, a single test file, a block of tests, or an individual test by clicking the corresponding triangle icon next to them.
+
+2. **Filtering Tests**:
+   - **Filter by Text or Tags**: You can filter tests by text, tags, or by their status (passed, failed, skipped).
+   - **Filter by Projects**: If you have multiple projects configured in your `playwright.config` file, you can filter tests by project.
+
+3. **Time Travel Debugging**:
+   - **Timeline View**: See a timeline of your test with different colors highlighting navigation and actions. Hover over each action to see an image snapshot of what was happening during that step.
+   - **Action Details**: Click on an action to inspect and debug it, and see what happened before and after the action.
+
+4. **DOM Inspection**:
+   - **Pop Out DOM Snapshot**: You can pop out the DOM snapshot into its own window for a better debugging experience. This allows you to inspect the HTML, CSS, console logs, and more.
+   - **Pick Locator**: Use the pick locator button to hover over the DOM snapshot and see the locator for each element. You can modify the locator in the playground and see if it matches any elements in the DOM snapshot.
+
+5. **Watch Mode**:
+   - **Automatic Re-run**: Automatically re-run tests when files change, providing instant feedback on your changes.
+
+#### How to Use Playwright UI Mode
+
+To open UI Mode, run the following command in your terminal:
+```bash
+npx playwright test --ui
+```
+This command will launch the Playwright Test Runner in UI Mode, displaying a list of all your test files in the sidebar.
+
+#### Example Commands
+
+Here are some example commands to run tests in different modes:
+- **Run tests in UI Mode**:
+  ```bash
+  npx playwright test --ui
+  ```
+- **Run tests in headed mode**:
+  ```bash
+  npx playwright test --headed
+  ```
+- **Run tests in debug mode**:
+  ```bash
+  npx playwright test --debug
+  ```
+
+#### Benefits of Using Playwright UI Mode
+
+- **Enhanced Debugging**: Provides a visual and interactive way to debug your tests, making it easier to identify and fix issues.
+- **Better Test Management**: Allows you to filter, run, and manage tests more efficiently.
+- **Improved Developer Experience**: Offers tools like time travel debugging and DOM inspection to enhance your overall testing workflow.
+
+Using Playwright UI Mode can significantly improve your ability to write, debug, and maintain your automated tests.
+
+### Understanding Get by Role
+
+The `getByRole` method in Playwright is a powerful locator that allows you to find elements based on their ARIA roles, which are used to define the purpose of elements in web applications. This method is particularly useful for ensuring your tests are both robust and accessible.
+
+### How `getByRole` Works
+
+The `getByRole` method locates elements by their role attribute, which is defined by the WAI-ARIA (Web Accessibility Initiative – Accessible Rich Internet Applications) specification. This method can also match elements based on their accessible name, which is the text that screen readers use to describe the element.
+
+### Usage Example
+
+Here's a simple example to illustrate how you can use `getByRole` in your Playwright scripts:
+
+```javascript
+const { test, expect } = require('@playwright/test');
+
+test('example test using getByRole', async ({ page }) => {
+    await page.goto('https://example.com');
+
+    // Locate a button by its role and accessible name
+    await page.getByRole('button', { name: 'Sign in' }).click();
+
+    // Locate a checkbox by its role and accessible name
+    await page.getByRole('checkbox', { name: 'Subscribe' }).check();
+
+    // Locate a heading by its role and accessible name
+    await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible();
+});
+```
+
+### Benefits of Using `getByRole`
+
+1. **Accessibility**: Ensures that your tests are aligned with accessibility best practices, as ARIA roles are crucial for screen readers and other assistive technologies.
+2. **Readability**: Using roles and accessible names makes your tests more readable and easier to understand, as they reflect the actual purpose of the elements.
+3. **Resilience**: Tests are less likely to break if the structure of your HTML changes but the roles and names remain the same.
+
+### When to Use `getByRole`
+
+- **Buttons**: Locate buttons by their role and accessible name.
+- **Checkboxes**: Locate checkboxes by their role and accessible name.
+- **Headings**: Locate headings by their role and accessible name.
+- **Links**: Locate links by their role and accessible name.
+
+### Advanced Usage
+
+The `getByRole` method supports various options to fine-tune your locators:
+- **`checked`**: Match checkboxes or radio buttons that are checked.
+- **`disabled`**: Match elements that are disabled.
+- **`expanded`**: Match elements that are expanded.
+- **`level`**: Match headings by their level (e.g., `h1`, `h2`).
+- **`name`**: Match elements by their accessible name, which can be a string or a regular expression.
+
+Here's an example with advanced options:
+```javascript
+await page.getByRole('button', { name: /submit/i, disabled: true }).click();
+```
+
+### Understanding getByText
+
+The `getByText` method in Playwright is a convenient locator that allows you to find elements based on their text content. This method is particularly useful for locating elements that display specific text, making your tests more readable and maintainable.
+
+### How `getByText` Works
+
+The `getByText` method locates elements by their visible text content. It matches the exact text or a substring of the text within the element. This method is case-insensitive and trims whitespace, making it flexible for various scenarios.
+
+### Usage Example
+
+Here's a simple example to illustrate how you can use `getByText` in your Playwright scripts:
+
+```javascript
+const { test, expect } = require('@playwright/test');
+
+test('example test using getByText', async ({ page }) => {
+    await page.goto('https://example.com');
+
+    // Locate an element by its text content and click on it
+    await page.getByText('More information').click();
+
+    // Verify that an element with specific text is visible
+    await expect(page.getByText('Welcome to Example.com')).toBeVisible();
+});
+```
+
+### Benefits of Using `getByText`
+
+1. **Readability**: Using text content makes your tests more readable and easier to understand, as they reflect the actual text users see on the page.
+2. **Maintainability**: If the structure of your HTML changes but the text remains the same, your tests are less likely to break.
+3. **Flexibility**: The method is case-insensitive and trims whitespace, making it adaptable to various text formats.
+
+### When to Use `getByText`
+
+- **Links**: Locate links by their visible text.
+- **Buttons**: Locate buttons by their text content.
+- **Headings and Paragraphs**: Locate headings, paragraphs, or any other elements by their text.
+
+### Advanced Usage
+
+The `getByText` method supports various options to fine-tune your locators:
+- **Exact Match**: Use the `exact` option to match the exact text.
+- **Regular Expressions**: Use regular expressions to match patterns in the text.
+
+Here's an example with advanced options:
+```javascript
+// Exact match
+await page.getByText('Submit', { exact: true }).click();
+
+// Regular expression match
+await page.getByText(/submit/i).click();
+```
+
+### Understanding getByPlaceholder
+
+The `getByPlaceholder` method in Playwright is a useful locator that allows you to find input elements based on their placeholder text. This method is particularly helpful for locating form fields where the placeholder text provides a hint about the expected input.
+
+### How `getByPlaceholder` Works
+
+The `getByPlaceholder` method locates input elements by their `placeholder` attribute. This is especially useful for input fields like text boxes, search fields, email fields, and password fields that have placeholder text to guide users.
+
+### Usage Example
+
+Here's a simple example to illustrate how you can use `getByPlaceholder` in your Playwright scripts:
+
+```javascript
+const { test, expect } = require('@playwright/test');
+
+test('example test using getByPlaceholder', async ({ page }) => {
+    await page.goto('https://example.com');
+
+    // Locate an input field by its placeholder text and fill it
+    await page.getByPlaceholder('Enter your username').fill('myUsername');
+    await page.getByPlaceholder('Enter your password').fill('myPassword');
+
+    // Submit the form
+    await page.getByRole('button', { name: 'Sign in' }).click();
+
+    // Verify the result
+    await expect(page.getByText('Welcome, myUsername!')).toBeVisible();
+});
+```
+
+### Benefits of Using `getByPlaceholder`
+
+1. **Readability**: Using placeholder text makes your tests more readable and easier to understand, as they reflect the actual hints users see on the page.
+2. **Maintainability**: If the structure of your HTML changes but the placeholder text remains the same, your tests are less likely to break.
+3. **Flexibility**: The method is straightforward and can be used in various scenarios where placeholder text is present.
+
+### When to Use `getByPlaceholder`
+
+- **Form Inputs**: Ideal for locating text inputs, search fields, email fields, and password fields by their placeholder text.
+- **Guided Inputs**: Useful for fields where the placeholder text provides guidance on the expected input.
+
+### Advanced Usage
+
+The `getByPlaceholder` method can be combined with other locators to narrow down your search:
+```javascript
+// Locate an input field within a specific form by its placeholder text
+await page.locator('form#login').getByPlaceholder('Enter your username').fill('myUsername');
+```
+
+Using `getByPlaceholder` can significantly improve the readability and robustness of your Playwright tests
+
+
+### Situations where getByLabel can be used in Edit Box
+
+
+The `getByLabel` method is particularly useful for entering data in edit boxes (input fields) in various scenarios. Here are some common situations where `getByLabel` can be effectively used:
+
+#### 1. **Login Forms**
+- **Scenario**: Entering a username and password in a login form.
+- **Example**:
+  ```javascript
+  await page.getByLabel('Username').fill('myUsername');
+  await page.getByLabel('Password').fill('myPassword');
+  ```
+
+#### 2. **Registration Forms**
+- **Scenario**: Filling out a registration form with multiple fields like name, email, and password.
+- **Example**:
+  ```javascript
+  await page.getByLabel('First Name').fill('John');
+  await page.getByLabel('Last Name').fill('Doe');
+  await page.getByLabel('Email').fill('john.doe@example.com');
+  await page.getByLabel('Password').fill('securePassword123');
+  ```
+
+#### 3. **Search Fields**
+- **Scenario**: Entering a search query in a search field.
+- **Example**:
+  ```javascript
+  await page.getByLabel('Search').fill('Playwright tutorials');
+  ```
+
+#### 4. **Contact Forms**
+- **Scenario**: Filling out a contact form with fields like name, email, and message.
+- **Example**:
+  ```javascript
+  await page.getByLabel('Name').fill('Jane Doe');
+  await page.getByLabel('Email').fill('jane.doe@example.com');
+  await page.getByLabel('Message').fill('I would like to know more about your services.');
+  ```
+
+#### 5. **Profile Update Forms**
+- **Scenario**: Updating user profile information such as address, phone number, and bio.
+- **Example**:
+  ```javascript
+  await page.getByLabel('Address').fill('123 Main St, Springfield');
+  await page.getByLabel('Phone Number').fill('123-456-7890');
+  await page.getByLabel('Bio').fill('Software developer with a passion for open-source projects.');
+  ```
+
+#### 6. **Feedback Forms**
+- **Scenario**: Providing feedback or comments in a feedback form.
+- **Example**:
+  ```javascript
+  await page.getByLabel('Feedback').fill('Great service! Keep up the good work.');
+  ```
+
+#### 7. **Subscription Forms**
+- **Scenario**: Entering an email address to subscribe to a newsletter.
+- **Example**:
+  ```javascript
+  await page.getByLabel('Email Address').fill('subscriber@example.com');
+  ```
+
+Using `getByLabel` in these scenarios ensures that your tests are both readable and maintainable, as they leverage the visible text labels that users interact with. This method also aligns with accessibility best practices, making your tests more robust and user-friendly.
+
+
+ 
