@@ -1086,4 +1086,96 @@ The `getByLabel` method is particularly useful for entering data in edit boxes (
 Using `getByLabel` in these scenarios ensures that your tests are both readable and maintainable, as they leverage the visible text labels that users interact with. This method also aligns with accessibility best practices, making your tests more robust and user-friendly.
 
 
- 
+ ### Handling Calender or date picker based assertions
+
+ Handling calendar-based tasks in Playwright involves interacting with date pickers and calendar widgets. Here are some common approaches and examples to help you automate these interactions:
+
+#### 1. **Selecting a Date from a Calendar Widget**
+
+If the calendar widget is a standard HTML element, you can interact with it directly by clicking on the date elements. Here's an example:
+
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+
+    // Open the calendar widget
+    await page.click('input#date-picker');
+
+    // Select a specific date
+    await page.click('text=15'); // Assuming the date is visible as text
+
+    await browser.close();
+})();
+```
+
+#### 2. **Filling a Date Input Field**
+
+If the date picker is an input field with a date type, you can fill it directly:
+
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+
+    // Fill the date input field
+    await page.fill('input[type="date"]', '2025-01-11');
+
+    await browser.close();
+})();
+```
+
+#### 3. **Handling Complex Calendar Widgets**
+
+For more complex calendar widgets, you might need to navigate through months or years to select a date. Here's an example of how to handle such a scenario:
+
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+
+    // Open the calendar widget
+    await page.click('input#date-picker');
+
+    // Navigate to the desired month and year
+    await page.click('button[aria-label="Next Month"]'); // Adjust the selector as needed
+
+    // Select the desired date
+    await page.click('text=15'); // Assuming the date is visible as text
+
+    await browser.close();
+})();
+```
+
+#### 4. **Using Date Libraries**
+
+You can also use date libraries like `date-fns` or `moment` to manipulate dates and format them as needed for your tests:
+
+```javascript
+const { chromium } = require('playwright');
+const { format } = require('date-fns');
+
+(async () => {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+
+    // Get today's date in the desired format
+    const today = format(new Date(), 'yyyy-MM-dd');
+
+    // Fill the date input field
+    await page.fill('input[type="date"]', today);
+
+    await browser.close();
+})();
+```
+
